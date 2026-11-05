@@ -16,3 +16,11 @@ if maxima > umbral_calor:
     print("¡Cuidado! La temperatura máxima ha superado el umbral de calor.", umbral_calor)
 else:
     print("La temperatura máxima está dentro del rango seguro.")    
+
+contador=0
+
+for t in temperaturas:
+    if t > 20:
+        contador += 1
+
+print("El número de dias por encima de 20°C es:", contador)
