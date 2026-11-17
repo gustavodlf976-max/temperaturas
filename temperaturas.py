@@ -1,44 +1,45 @@
-from analisis import  (
+from datos import temperaturas
+from analisis import (
+    extraer_temperaturas,
     calcular_media,
+    calcular_maxima,
+    calcular_minima,
     contar_mayores,
-    clasificar_temperaturas,
-    resumen_temperaturas
+    filtrar_por_ciudad,
+    dia_mas_caluroso,
+    obtener_ciudades,
+    ciudad_mas_calurosa,
+    agrupar_por_ciudad,
+    media_por_ciudad,
+    maxima_por_ciudad
+
 )
-temperaturas=[18.5, 21.2, 19.8, 23.1, 25.4]
 
-media=calcular_media(temperaturas)
-maxima=max(temperaturas)
-minima=min(temperaturas)
+# Extraemos la columna de temperaturas
+valores = extraer_temperaturas(temperaturas)
 
-print(temperaturas)
+print("=== INFORME DE TEMPERATURAS ===")
+print("Número de registros:", len(temperaturas))
+print("Máxima:", calcular_maxima(valores))
+print("Mínima:", calcular_minima(valores))
+print("Media :", round(calcular_media(valores), 2))
+print("Días por encima de 20 grados:", contar_mayores(valores, 20))
 
-print("La media de las temperaturas es:", media)
-print("La temperatura máxima es:", maxima)
-print("La temperatura mínima es:", minima)
+print("\n=== DÍA MÁS CALUROSO ===")
+mas_caluroso = dia_mas_caluroso(temperaturas)
+print(mas_caluroso["dia"], mas_caluroso["ciudad"], mas_caluroso["temperatura"])
 
-umbral_calor=22.0   
+print("\n=== REGISTROS DE ZARAGOZA ===")
+for r in filtrar_por_ciudad(temperaturas, "Zaragoza"):
+    print(r["dia"], r["temperatura"])
 
-if maxima > umbral_calor:
-    print("¡Cuidado! La temperatura máxima ha superado el umbral de calor.", umbral_calor)
-else:
-    print("La temperatura máxima está dentro del rango seguro.")    
+print("maxima:", maxima_por_ciudad(temperaturas))
 
-#contar temperaturas superiores al umbral
-print(f"El número de dias por encima de {umbral_calor} es:", contar_mayores(temperaturas, umbral_calor))
-
-for i in range(1, len(temperaturas)):
-    diferencia = temperaturas[i] - temperaturas[i-1]
-
-    if diferencia > 0:
-        tendencia = "subió"
-    elif diferencia < 0:
-        tendencia = "bajó"
-    else:
-        tendencia = "se mantuvo igual"  
-    print(f"Dia {i}: -> Dia {i+1}: La temperatura {tendencia} en {round(diferencia, 2)} Grados.")
-
-print ("------Clasificación de temperaturas------")
-
-print (resumen_temperaturas(temperaturas))
-
-
+maximas = maxima_por_ciudad(temperaturas)
+mejor_ciudad = ""
+mejor_maxima = -1000
+for ciudad, maxima in maximas.items():
+    if maxima > mejor_maxima:
+        mejor_maxima = maxima
+        mejor_ciudad = ciudad
+print("Ciudad con la máxima más alta:", mejor_ciudad, mejor_maxima)
